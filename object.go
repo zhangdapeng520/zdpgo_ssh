@@ -52,7 +52,7 @@ func (s *SSH) Connect() {
 	clientConfig = &ssh.ClientConfig{
 		User:            s.Username,
 		Auth:            auth,
-		Timeout:         30 * time.Second,
+		Timeout:         3600 * time.Second,
 		HostKeyCallback: ssh.InsecureIgnoreHostKey(), //ssh.FixedHostKey(hostKey),
 	}
 

@@ -1,6 +1,7 @@
 package zdpgo_ssh
 
 import (
+	"fmt"
 	"io"
 	"os"
 
@@ -9,8 +10,8 @@ import (
 )
 
 //执行sh命令
-//@param commoand 命令
-func (s *SSH) Run(commoand string) (string, error) {
+//@param command 命令
+func (s *SSH) Run(command string) (string, error) {
 
 	// 创建连接
 	if s.SSHClient == nil {
@@ -25,7 +26,34 @@ func (s *SSH) Run(commoand string) (string, error) {
 	defer session.Close()
 
 	// 执行命令
-	buf, err := session.CombinedOutput(commoand)
+	buf, err := session.CombinedOutput(command)
+
+	// 记录最后一次的执行命令结果
+	s.LastResult = string(buf)
+
+	// 返回命令执行结果
+	return s.LastResult, err
+}
+
+//使用管理员身份执行sh命令
+//@param command 命令
+func (s *SSH) Sudo(command string) (string, error) {
+
+	// 创建连接
+	if s.SSHClient == nil {
+		s.Connect()
+	}
+
+	// 创建session
+	session, err := s.SSHClient.NewSession()
+	if err != nil {
+		return "", err
+	}
+	defer session.Close()
+
+	// 执行命令
+	command = fmt.Sprintf("echo %s | sudo -S %s", s.Password, command)
+	buf, err := session.CombinedOutput(command)
 
 	// 记录最后一次的执行命令结果
 	s.LastResult = string(buf)
