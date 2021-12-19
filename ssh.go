@@ -81,6 +81,25 @@ func (s *SSH) Run(command string) (string, error) {
 	return s.LastResult, err
 }
 
+// 执行sh命令
+// @param commands 命令列表
+func (s *SSH) RunMany(commands ...string) (string, error) {
+	for _, command := range commands{
+		// 执行命令
+		result, err := s.Run(command)
+		
+		if err != nil{
+			return "", err
+		}
+
+		// 记录最后一次的执行命令结果
+		s.LastResult = result
+	}
+
+	// 返回命令执行结果
+	return s.LastResult, nil
+}
+
 // 使用管理员身份执行sh命令
 // @param command 命令
 func (s *SSH) Sudo(command string) (string, error) {
