@@ -9,8 +9,54 @@ import (
 	"golang.org/x/term"
 )
 
-//执行sh命令
-//@param command 命令
+// 执行sh命令
+// @param command 命令
+// @param debug 是否为debug模式
+func (s *SSH) RunDebug(command string, debug bool) (string, error) {
+	if debug{
+		fmt.Println("正在执行命令：", command)
+	}
+
+	result, err := s.Run(command)
+	if err !=nil{
+		if debug {
+			fmt.Println("执行命令失败：", err)
+		}
+		return "", err
+	}
+
+	if debug{
+		fmt.Println("命令的执行结果：", result)
+	}
+
+	return result, err
+}
+
+// 以管理员身份执行sh命令
+// @param command 命令
+// @param debug 是否为debug模式
+func (s *SSH) SudoDebug(command string, debug bool) (string, error) {
+	if debug{
+		fmt.Println("正在执行命令：", command)
+	}
+
+	result, err := s.Sudo(command)
+	if err !=nil{
+		if debug {
+			fmt.Println("执行命令失败：", err)
+		}
+		return "", err
+	}
+
+	if debug{
+		fmt.Println("命令的执行结果：", result)
+	}
+	
+	return result, err
+}
+
+// 执行sh命令
+// @param command 命令
 func (s *SSH) Run(command string) (string, error) {
 
 	// 创建连接
@@ -35,8 +81,8 @@ func (s *SSH) Run(command string) (string, error) {
 	return s.LastResult, err
 }
 
-//使用管理员身份执行sh命令
-//@param command 命令
+// 使用管理员身份执行sh命令
+// @param command 命令
 func (s *SSH) Sudo(command string) (string, error) {
 
 	// 创建连接
@@ -62,10 +108,10 @@ func (s *SSH) Sudo(command string) (string, error) {
 	return s.LastResult, err
 }
 
-//执行带交互的命令
-//@param command 命令
-//@param stdout 标准输出
-//@param stderr 标准错误输出
+// 执行带交互的命令
+// @param command 命令
+// @param stdout 标准输出
+// @param stderr 标准错误输出
 func (s *SSH) RunTerminal(command string, stdout, stderr io.Writer) error {
 	// 创建连接
 	if s.SSHClient == nil {
