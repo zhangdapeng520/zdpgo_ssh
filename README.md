@@ -5,6 +5,10 @@
 - 在go代码里连接linux系统，执行shell命令
 - FTP文件上传和下载
 - FTP文件夹上传和下载
+- 执行sudo命令
+- 批量执行ssh命令
+
+zdpgo_ssh框架使用教程（官方博客）：https://blog.csdn.net/qq_37703224/category_11546273.html
 
 ## 一、快速入门
 
