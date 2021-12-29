@@ -59,11 +59,11 @@ func (s *SSH) Connect() {
 	// 连接到SSH
 	addr = fmt.Sprintf("%s:%d", s.Host, s.Port)
 	if s.SSHClient, err = ssh.Dial("tcp", addr, clientConfig); err != nil {
-		panic(err)
+		fmt.Println("与服务器建立SSH连接失败：", err)
 	}
 
 	// 创建sftp客户端
 	if s.SFTPClient, err = sftp.NewClient(s.SSHClient); err != nil {
-		panic(err)
+		fmt.Println("该服务器不支持SFTP服务：", err)
 	}
 }

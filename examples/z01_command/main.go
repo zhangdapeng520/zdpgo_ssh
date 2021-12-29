@@ -7,7 +7,8 @@ import (
 )
 
 func main() {
-	s := zdpgo_ssh.New("192.168.18.11", "zhangdapeng", "zhangdapeng", 22)
-	output, err := s.Run("free -h")
+	ssh := zdpgo_ssh.New("192.168.18.101", "zhangdapeng", "zhangdapeng", 22)
+	ssh.Connect()
+	output, err := ssh.Run("free -h")
 	fmt.Printf("%v\n%v", output, err)
 }

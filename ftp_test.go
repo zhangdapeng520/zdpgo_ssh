@@ -2,6 +2,7 @@ package zdpgo_ssh
 
 import "testing"
 
+// 上传文件
 func MTestUploadFile(t *testing.T) {
 	ssh := SSH{
 		Host:     "192.168.18.11", // 主机
@@ -13,6 +14,7 @@ func MTestUploadFile(t *testing.T) {
 	ssh.UploadFile("README.md", "/home/zhangdapeng")
 }
 
+// 上传文件夹
 func TestUploadDirectory(t *testing.T) {
 	ssh := SSH{
 		Host:     "192.168.18.11", // 主机
