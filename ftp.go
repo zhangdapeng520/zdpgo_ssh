@@ -20,13 +20,10 @@ func (s *SSH) UploadFile(localPath, remotePath string) {
 	}
 	defer srcFile.Close()
 
-	// 远程文件名
-	var remoteFileName = path.Base(localPath)
-
 	// 创建目标文件
-	dstFile, err := s.SFTPClient.Create(path.Join(remotePath, remoteFileName))
+	dstFile, err := s.SFTPClient.Create(remotePath)
 	if err != nil {
-		fmt.Println("sftpClient.Create 创建目标文件失败 : ", path.Join(remotePath, remoteFileName))
+		fmt.Println("sftpClient.Create 创建目标文件失败 : ", remotePath)
 		log.Fatal(err)
 	}
 	defer dstFile.Close()
