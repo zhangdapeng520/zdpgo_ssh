@@ -6,6 +6,7 @@
 
 - v1.0.3 2022/06/26 升级：日志组件升级
 - v1.0.4 2022/06/26 新增：文件上传和下载
+- v1.0.5 2022/06/26 优化：移除日志
 
 ## 快速入门
 
@@ -16,7 +17,6 @@ package main
 
 import (
 	"fmt"
-	"github.com/zhangdapeng520/zdpgo_log"
 	"github.com/zhangdapeng520/zdpgo_ssh"
 )
 
@@ -27,7 +27,7 @@ func main() {
 		Port:     22,
 		Username: "zhangdapeng",
 		Password: "zhangdapeng",
-	}, zdpgo_log.Tmp)
+	})
 
 	// 进行连接
 	output, err := s.Run("free -h")
@@ -47,8 +47,6 @@ package main
 
 import (
 	"fmt"
-	"github.com/zhangdapeng520/zdpgo_log"
-
 	"github.com/zhangdapeng520/zdpgo_ssh"
 )
 
@@ -58,7 +56,7 @@ func main() {
 		Port:     22,
 		Username: "zhangdapeng",
 		Password: "zhangdapeng",
-	}, zdpgo_log.Tmp)
+	})
 	output, err := s.Sudo("ls -lah")
 	fmt.Printf("%v\n%v", output, err)
 }
@@ -71,7 +69,6 @@ package main
 
 import (
 	"fmt"
-	"github.com/zhangdapeng520/zdpgo_log"
 	"github.com/zhangdapeng520/zdpgo_ssh"
 )
 
@@ -81,7 +78,7 @@ func main() {
 		Port:     22,
 		Username: "zhangdapeng",
 		Password: "zhangdapeng",
-	}, zdpgo_log.Tmp)
+	})
 	output, err := s.Sudo("ls -lah")
 	fmt.Printf("%v\n%v", output, err)
 
@@ -100,7 +97,6 @@ package main
 
 import (
 	"fmt"
-	"github.com/zhangdapeng520/zdpgo_log"
 	"github.com/zhangdapeng520/zdpgo_ssh"
 )
 
@@ -110,7 +106,7 @@ func main() {
 		Port:     22,
 		Username: "zhangdapeng",
 		Password: "zhangdapeng",
-	}, zdpgo_log.Tmp)
+	})
 	output, err := s.Sudo("ls -lah")
 	fmt.Printf("%v\n%v", output, err)
 

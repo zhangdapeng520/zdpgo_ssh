@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"github.com/zhangdapeng520/zdpgo_log"
 	"github.com/zhangdapeng520/zdpgo_ssh"
 )
 
@@ -12,7 +11,7 @@ func main() {
 		Port:     22,
 		Username: "zhangdapeng",
 		Password: "zhangdapeng",
-	}, zdpgo_log.Tmp)
+	})
 	output, err := s.Sudo("ls -lah")
 	fmt.Printf("%v\n%v", output, err)
 
