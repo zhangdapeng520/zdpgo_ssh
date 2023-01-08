@@ -7,6 +7,7 @@
 - v1.0.3 2022/06/26 升级：日志组件升级
 - v1.0.4 2022/06/26 新增：文件上传和下载
 - v1.0.5 2022/06/26 优化：移除日志
+- v1.0.6 2023/01/08 新增：通过公钥连接SSH，即就是免密登录
 
 ## 快速入门
 
@@ -115,5 +116,41 @@ func main() {
 
 	output, err = s.Sudo("ls -lah")
 	fmt.Printf("%v\n%v", output, err)
+}
+```
+
+# 公共公钥连接SSH
+
+## Windows配置SSH免密登录
+
+这一步很重要，大家可以自行谷歌解决。如果嫌麻烦，也可以关注我的公众号“Python私教”，里面有详细的配置教程和zdpgo_ssh库的使用说明。
+
+## 使用示例
+
+本示例的地址位于本开源项目的：examples/new_with_public_key/main.go
+
+```go
+package main
+
+import (
+	"fmt"
+	"github.com/zhangdapeng520/zdpgo_ssh"
+)
+
+func main() {
+	var (
+		user = "root"
+		host = "192.168.1.81"
+		port = 22
+	)
+	ssh, err := zdpgo_ssh.NewWithPublicKey(user, host, port)
+	if err != nil {
+		panic(err)
+	}
+	result, err := ssh.Run("pwd")
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println(result)
 }
 ```

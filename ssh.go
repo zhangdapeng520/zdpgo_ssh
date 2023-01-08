@@ -5,6 +5,7 @@ import (
 	"github.com/zhangdapeng520/zdpgo_ssh/sftp"
 	"io"
 	"os"
+	"path"
 	"strings"
 	"time"
 
@@ -17,11 +18,11 @@ type SSH struct {
 	Config *Config
 }
 
-//New 创建SSH对象
-//@param host 主机地址
-//@param username 用户名
-//@param password 密码
-//@param port 端口号,默认22
+// New 创建SSH对象
+// @param host 主机地址
+// @param username 用户名
+// @param password 密码
+// @param port 端口号,默认22
 func New() *SSH {
 	return NewWithConfig(&Config{})
 }
@@ -34,6 +35,58 @@ func NewWithConfig(config *Config) *SSH {
 
 	// 返回
 	return s
+}
+
+// NewWithPublicKey 通过公钥的方式连接
+// @param user 主机用户名
+// @param host 主机IP地址或域名
+// @param port 主机SSH服务端口号，一般是22
+// @return s SSH连接对象
+// @return err 错误信息
+func NewWithPublicKey(user, host string, port int) (s *SSH, err error) {
+	var (
+		addr         string
+		clientConfig *ssh.ClientConfig
+		client       *ssh.Client
+	)
+
+	// 获取用户家目录
+	homePath, err := os.UserHomeDir()
+	if err != nil {
+		return
+	}
+
+	// 读取用户的私钥
+	key, err := os.ReadFile(path.Join(homePath, ".ssh", "id_rsa"))
+	if err != nil {
+		return
+	}
+	signer, err := ssh.ParsePrivateKey(key)
+	if err != nil {
+		return
+	}
+
+	// 创建连接配置
+	clientConfig = &ssh.ClientConfig{
+		User: user,
+		Auth: []ssh.AuthMethod{
+			ssh.PublicKeys(signer),
+		},
+		Timeout:         30 * time.Second,
+		HostKeyCallback: ssh.InsecureIgnoreHostKey(),
+	}
+
+	// 使用公钥连接到SSH
+	addr = fmt.Sprintf("%s:%d", host, port)
+	if client, err = ssh.Dial("tcp", addr, clientConfig); err != nil {
+		return
+	}
+
+	// 构建SSH对象
+	s = &SSH{Client: client}
+
+	// 返回
+	return
 }
 
 // Connect 建立连接
